@@ -18,6 +18,10 @@
 						</th>
 					</tr>
 				</table>
+				<form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="clear_cart" class="btn btn-outline-secondary btn-block">Clear Cart</button>
+                </form>
 
 			</div>
 
@@ -39,7 +43,6 @@
 						<p class="quantity">{{item.quantity}}</p>
 						<div class="quantity">
 							<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
-
 							<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" class="chg-quantity" src="{% static  'images/arrow-down.png' %}">
 						</div>
 					</div>
