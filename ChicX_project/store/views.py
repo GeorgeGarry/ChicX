@@ -102,7 +102,7 @@ def cart(request):
         items = data['items']
         # items = [1,2,3]
 
-        context = {'items': items, 'order': order, 'cartItems': cartItems}
+    context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/cart.html', context)
 
 
