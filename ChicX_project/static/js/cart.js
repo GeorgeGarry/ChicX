@@ -63,3 +63,21 @@ function addCookieItem(productId, action){
 	location.reload()
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const clearCartBtn = document.getElementById('clear-cart-btn');
+    if (clearCartBtn) {
+        clearCartBtn.addEventListener('click', function () {
+            if (user === 'AnonymousUser') {
+                clearCartForAnonymousUser();
+            } else {
+                document.getElementById('clear-cart-form').submit();  // Submits the form for authenticated users
+            }
+        });
+    }
+});
+
+function clearCartForAnonymousUser() {
+    document.cookie = 'cart=; Max-Age=0; path=/; domain=' + window.location.hostname;
+    console.log('Cart cleared for anonymous user');
+    location.reload();
+}

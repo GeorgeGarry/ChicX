@@ -1,9 +1,46 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse, HttpResponseRedirect
 import json
 import datetime
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+from django.contrib.auth import login
+from .forms import CustomUserCreationForm
+
+
+# def signup(request):
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             Customer.objects.create(user=user)  # Create the Customer object
+#             login(request, user)  # Log the user in after successful sign-up
+#             return redirect('store')
+#     else:
+#         form = CustomUserCreationForm()
+#     return render(request, 'store/signup.html', {'form': form})
+
+
+class CustomLoginView(FormView):
+    template_name = 'store/login.html'
+    form_class = AuthenticationForm
+    success_url = reverse_lazy('store')
+    redirect_authenticated_user = True
+
+    def form_valid(self, form):
+        login(self.request, form.get_user())
+        if self.request.is_ajax():
+            return JsonResponse({'success': True})
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            return JsonResponse({'success': False, 'errors': form.errors})
+        return super().form_invalid(form)
 
 
 def store(request):
@@ -30,14 +67,17 @@ def product_detail(request, id):
     return render(request, 'store/product_detail.html', context)
 
 
-# def cart(request):
-#     data = cartData(request)
-#     cartItems = data['cartItems']
-#     order = data['order']
-#     items = data['items']
-#
-#     context = {'items': items, 'order': order, 'cartItems': cartItems}
-#     return render(request, 'store/cart.html', context)
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()  # This line saves the user to the database
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'store/signup.html', {'form': form})
+
+
 def cart(request):
     if request.method == 'POST' and 'clear_cart' in request.POST:
         if request.user.is_authenticated:
@@ -45,9 +85,10 @@ def cart(request):
             order, created = Order.objects.get_or_create(customer=customer, complete=False)
             order.orderitem_set.all().delete()
         else:
-            response = JsonResponse('Cart cleared', safe=False)
+            response = HttpResponseRedirect('/cart/')
             response.delete_cookie('cart')
             return response
+
 
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -55,12 +96,24 @@ def cart(request):
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
     else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cartItems = order['get_cart_items']
+        data = cartData(request)
+        cartItems = data['cartItems']
+        order = data['order']
+        items = data['items']
+        # items = [1,2,3]
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
+        context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/cart.html', context)
+
+
+#     # items = []
+#     items =
+#     order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+#     cartItems = order['get_cart_items']
+#
+# context = {'items': items, 'order': order, 'cartItems': cartItems}
+# return render(request, 'store/cart.html', context)
+
 
 def checkout(request):
     data = cartData(request)
