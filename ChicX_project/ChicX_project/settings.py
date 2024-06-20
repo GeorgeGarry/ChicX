@@ -128,3 +128,20 @@ MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#
+# server {
+#     listen 80;
+#     server_name chicx.onrender.com;
+#
+#     location = /favicon.ico { access_log off; log_not_found off; }
+#     location /static/ {
+#         root /Users/george/Desktop/ChicX/ChicX/ChicX_project;
+#     }
+#
+#     location / {
+#         include proxy_params;
+#         proxy_pass http://unix://Users/george/Desktop/ChicX/ChicX/ChicX_project.sock;
+#     }
+# }
