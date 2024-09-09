@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-74h17199^nh3-7_wdls5@q*)9xl)w=6ml&*wj-l(9e*@0b-dle
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["chicx.onrender.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["chicx.onrender.com", "127.0.0.1", "chicx-b1ad45a54e39.herokuapp.com"]
 
 # Application definition
 
