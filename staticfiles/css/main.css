@@ -37,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .thumbnail {
-    width: 100%;
+    width: 100px;
     height: 200px;
     object-fit: contain;
     -webkit-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
@@ -74,9 +74,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 0;
 }
 
-.row-image {
-    width: 10px;
-}
+
 
 .form-field {
     width: 250px;
