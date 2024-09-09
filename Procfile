@@ -1,2 +1,2 @@
-web: python manage.py runserver
-web: gunicorn 
+release: python manage.py migrate
+web: gunicorn ChicX_project.wsgi
