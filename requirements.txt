@@ -25,3 +25,4 @@ typing_extensions==4.7.1
 urllib3==2.0.4
 virtualenv==20.24.3
 Werkzeug==2.2.3
+whitenoise==6.7.0
