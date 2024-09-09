@@ -4,6 +4,7 @@ for (i = 0; i< updateBtns.length; i++) {
         var productId = this.dataset.product
         var action = this.dataset.action
         console.log('productId: ', productId, 'Action: ', action)
+        console.log('var updateBtns')
 
         console.log('user: ', user)
         if (user == 'AnonymousUser'){
